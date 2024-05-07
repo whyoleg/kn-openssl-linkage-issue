@@ -1,0 +1,31 @@
+name: CI
+on: push
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }} with ${{ matrix.cache }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-22.04, ubuntu-20.04, macos-13, macos-14, windows-latest ]
+        cache: [ '', '-Pkotlin.native.cacheKind=none' ]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v3
+        with:
+          build-scan-publish: true
+          build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
+          build-scan-terms-of-use-agree: "yes"
+
+      - if: matrix.os == 'windows-latest'
+        uses: msys2/setup-msys2@v2
+        with:
+          release: false
+          install: mingw-w64-x86_64-openssl
+
+      - run: ./gradlew build ${{ matrix.cache }} --continue
