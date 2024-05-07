@@ -14,10 +14,10 @@ jobs:
       matrix:
         os: [
           ubuntu-22.04,
-          ubuntu-20.04
-#          macos-13,
-#          macos-14,
-#          windows-latest
+          ubuntu-20.04,
+          macos-13,
+          macos-14,
+          windows-latest
         ]
         cache: [ '', 'none' ]
         type: [ 'Debug', 'Release' ]
@@ -33,13 +33,6 @@ jobs:
           build-scan-publish: true
           build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
           build-scan-terms-of-use-agree: "yes"
-
-      #     required to link a shared library
-      - if: matrix.os == 'windows-latest'
-        uses: msys2/setup-msys2@v2
-        with:
-          release: false
-          install: mingw-w64-x86_64-openssl
 
       - if: ${{ matrix.cache == 'none' }}
         run: ./gradlew link${{ matrix.type }}TestNative -Pkotlin.native.cacheKind=none
