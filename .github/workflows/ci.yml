@@ -41,12 +41,6 @@ jobs:
           release: false
           install: mingw-w64-x86_64-openssl
 
-      - if: matrix.os == 'ubuntu-20.04' || matrix.os == 'ubuntu-22.04'
-        uses: Homebrew/actions/setup-homebrew@master
-
-      - if: matrix.os == 'ubuntu-20.04' || matrix.os == 'ubuntu-22.04'
-        run: brew install openssl@3
-
       - if: ${{ matrix.cache == 'none' }}
         run: ./gradlew link${{ matrix.type }}TestNative -Pkotlin.native.cacheKind=none
       - if: ${{ matrix.cache == '' }}
