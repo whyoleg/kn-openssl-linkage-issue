@@ -1,20 +1,24 @@
 import dev.whyoleg.cryptography.*
 import dev.whyoleg.cryptography.algorithms.digest.*
 
-private val Sha256 = CryptographyProvider.Default.get(SHA256).hasher()
+fun main() {
+    val digest =
+        CryptographyProvider.Default
+            .get(SHA256)
+            .hasher()
+            .hashBlocking("Hello World".encodeToByteArray())
+            .let(::printHexBinary)
 
-fun sha256(input: String): String {
-    val bytes = input.encodeToByteArray()
-    val digest = Sha256.hashBlocking(bytes)
-    return digest.toHex()
+    println(digest)
 }
 
-private const val HEX = "0123456789ABCDEF"
-private fun ByteArray.toHex(): String {
-    return buildString(size * 2) {
-        this@toHex.forEach {
-            append(HEX[it.toInt() shr 4 and 0xF])
-            append(HEX[it.toInt() and 0xF])
-        }
-    }.lowercase()
+private const val hexCode = "0123456789ABCDEF"
+
+private fun printHexBinary(data: ByteArray): String {
+    val r = StringBuilder(data.size * 2)
+    for (b in data) {
+        r.append(hexCode[b.toInt() shr 4 and 0xF])
+        r.append(hexCode[b.toInt() and 0xF])
+    }
+    return r.toString().lowercase()
 }

@@ -7,7 +7,7 @@ defaults:
 
 jobs:
   build:
-    name: ${{ matrix.type }},cache=${{ matrix.cache }},${{ matrix.os }}
+    name: os=${{ matrix.os }},cache=${{ matrix.cache }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -15,12 +15,11 @@ jobs:
         os: [
           ubuntu-22.04,
           ubuntu-20.04
-#          macos-13,
-#          macos-14,
-#          windows-latest
+          #          macos-13,
+          #          macos-14,
+          #          windows-latest
         ]
         cache: [ '', 'none' ]
-        type: [ 'Debug', 'Release' ]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -35,6 +34,6 @@ jobs:
           build-scan-terms-of-use-agree: "yes"
 
       - if: ${{ matrix.cache == 'none' }}
-        run: ./gradlew link${{ matrix.type }}TestNative -Pkotlin.native.cacheKind=none
+        run: ./gradlew build --continue -Pkotlin.native.cacheKind=none
       - if: ${{ matrix.cache == '' }}
-        run: ./gradlew link${{ matrix.type }}TestNative
+        run: ./gradlew build --continue
