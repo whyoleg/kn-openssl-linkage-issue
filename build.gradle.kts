@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.*
 import org.jetbrains.kotlin.gradle.plugin.mpp.*
 
 plugins {
@@ -5,6 +6,11 @@ plugins {
 }
 
 kotlin {
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    compilerOptions {
+        this.freeCompilerArgs.add("-Xverbose-phases=Linker")
+    }
+
     val javaOsName = System.getProperty("os.name")
     val javaOsArch = System.getProperty("os.arch")
     when {
@@ -13,6 +19,7 @@ kotlin {
             "arm64", "aarch64" -> macosArm64("native")
             else               -> error("Unknown os.arch: $javaOsArch")
         }
+
         javaOsName.contains("linux", ignoreCase = true)   -> linuxX64("native")
         javaOsName.contains("windows", ignoreCase = true) -> mingwX64("native")
         else                                              -> error("Unknown os.name: $javaOsName")
