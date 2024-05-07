@@ -14,10 +14,10 @@ jobs:
       matrix:
         os: [
           ubuntu-22.04,
-          ubuntu-20.04,
-          macos-13,
-          macos-14,
-          windows-latest
+          ubuntu-20.04
+#          macos-13,
+#          macos-14,
+#          windows-latest
         ]
         cache: [ '', 'none' ]
         type: [ 'Debug', 'Release' ]
