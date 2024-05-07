@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.*
 import org.jetbrains.kotlin.gradle.plugin.mpp.*
 
 plugins {
-    kotlin("multiplatform") version "2.0.0-RC2"
+    kotlin("multiplatform") version "1.9.23"
 }
 
 kotlin {
